@@ -4,7 +4,7 @@ import theme from "../../styles/thyme";
 
 export const Container = styled.div`
   position: relative;
-  height: calc(100vh - 60px);
+  height: calc(100vh - ${theme.size.navBar});
   overflow-y: auto;
   display: flex;
   flex-direction: column;

@@ -8,43 +8,19 @@ export const theme = {
     xxl: "24px",
     xxxl: "32px",
   },
-
-  typography: {
-    header: {
-      title: {
-        fontSize: "24px",
-        fontWeight: "bold",
-        lineHeight: "32px",
-      },
-      subtitle: {
-        fontSize: "20px",
-        fontWeight: "600",
-        lineHeight: "28px",
-      },
-    },
-    body: {
-      regular: {
-        fontSize: "16px",
-        fontWeight: "400",
-        lineHeight: "24px",
-      },
-      small: {
-        fontSize: "14px",
-        fontWeight: "400",
-        lineHeight: "20px",
-      },
-      caption: {
-        fontSize: "12px",
-        fontWeight: "300",
-        lineHeight: "16px",
-      },
-    },
+  size: {
+    navBar: "60px",
   },
 
   colors: {
     white: "#FFFFFF",
     background: "#F2F5F7",
-    glassWhite: '"rgba(242, 245, 247, 0.8)"',
+    glassWhite: "rgba(242, 245, 247, 0.8)",
+    blue: "#007bff",
+  },
+
+  typography: {
+    fontFamily: "'Mullish', sans-serif",
   },
 };
 

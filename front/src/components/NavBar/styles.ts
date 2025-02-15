@@ -3,8 +3,8 @@ import { styled } from "styled-components";
 import theme from "../../styles/thyme";
 
 export const NavContainer = styled.nav`
-  background-color: #007bff;
-  padding: 12px 14px;
+  background-color: ${theme.colors.blue};
+  height: ${theme.size.navBar};
   display: flex;
   flex-direction: row;
   align-items: center;

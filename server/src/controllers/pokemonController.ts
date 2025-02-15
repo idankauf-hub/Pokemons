@@ -16,3 +16,17 @@ export const getPokemons = async (
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getPokemonDetails = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const name = req.params.name;
+    const data = await pokemonService.getPokemonDetails(name);
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

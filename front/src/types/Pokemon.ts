@@ -14,3 +14,11 @@ export interface PokemonListResponse {
   previous: string | null;
   results: Pokemon[];
 }
+
+export interface PokemonDetails {
+  name: string;
+  image: string;
+  abilitiesNames: string[];
+  typesNames: string[];
+  evolutions: string[];
+}
