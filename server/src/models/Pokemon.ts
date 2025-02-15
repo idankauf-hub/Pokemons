@@ -1,15 +1,14 @@
-import mongoose, { Document } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
-interface IPokemon extends Document {
-  id: number;
+export interface IFavoritePokemon extends Document {
   name: string;
-  type: string;
 }
 
-const PokemonSchema = new mongoose.Schema({
-  id: { type: Number, required: true, unique: true },
-  name: { type: String, required: true },
-  type: { type: String, required: true },
+const FavoritePokemonSchema = new Schema<IFavoritePokemon>({
+  name: { type: String, required: true, unique: true },
 });
 
-export default mongoose.model<IPokemon>("Pokemon", PokemonSchema);
+export default model<IFavoritePokemon>(
+  "FavoritePokemon",
+  FavoritePokemonSchema
+);

@@ -30,3 +30,21 @@ export const getPokemonDetails = async (
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const addFavoritePokemon = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { name } = req.body;
+    if (!name) {
+      res.status(400).json({ message: "Pokemon name is required." });
+      return;
+    }
+    const result = await pokemonService.addFavoritePokemon(name);
+    res.status(201).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

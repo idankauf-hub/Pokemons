@@ -7,6 +7,7 @@ import {
   PokemonTypeData,
 } from "../Types/pokemons.types";
 import { extractEvolution } from "../utils/pokemonsUtils";
+import FavoritePokemon, { IFavoritePokemon } from "../models/Pokemon";
 
 export const getPaginated = async (limit: number, offset: number) => {
   const response = await axios.get(GET_POKEMONS_API, {
@@ -46,7 +47,22 @@ export const getPokemonDetails = async (
   return { name, image, abilitiesNames, typesNames, evolutions };
 };
 
+export const findFavoritePokemonByName = async (
+  name: string
+): Promise<IFavoritePokemon | null> => {
+  return await FavoritePokemon.findOne({ name });
+};
+
+export const saveFavoritePokemon = async (pokemon: {
+  name: string;
+}): Promise<IFavoritePokemon> => {
+  const newFavorite = new FavoritePokemon(pokemon);
+  return await newFavorite.save();
+};
+
 export default {
   getPaginated,
   getPokemonDetails,
+  saveFavoritePokemon,
+  findFavoritePokemonByName,
 };
