@@ -48,3 +48,21 @@ export const addFavoritePokemon = async (
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const deleteFavoritePokemon = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { name } = req.params;
+    if (!name) {
+      res.status(400).json({ message: "Pokemon name is required." });
+      return;
+    }
+    await pokemonService.deleteFavoritePokemon(name);
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

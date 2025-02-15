@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { MAX_POKEMONS } from "../../constants";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
-import { useGetPokemonsQuery } from "../../services/pokemonApi";
+import {
+  useAddFavoriteMutation,
+  useGetPokemonsQuery,
+  useRemoveFavoriteMutation,
+} from "../../services/pokemonApi";
 import { Pokemon } from "../../types/Pokemon";
 import { Card } from "../Card/Card";
 import { ListContainer } from "./styles";
@@ -10,6 +14,7 @@ import { Loader } from "../Loader/Loader";
 
 export const PokemonsList = () => {
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
+  const [localFavorites, setLocalFavorites] = useState<string[]>([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
 
@@ -21,6 +26,41 @@ export const PokemonsList = () => {
     { limit, offset },
     { skip: !hasMorePokemons }
   );
+  const [addFavorite] = useAddFavoriteMutation();
+  const [removeFavorite] = useRemoveFavoriteMutation();
+
+  useEffect(() => {
+    if (!data?.results) return;
+    setAllPokemons((prev) => [...prev, ...data.results]);
+
+    const fetchedFavorites = data?.results
+      ?.filter((pokemon) => pokemon?.isFavorite)
+      ?.map((pokemon) => pokemon?.name);
+
+    setLocalFavorites((prev) =>
+      Array.from(new Set([...prev, ...fetchedFavorites]))
+    );
+  }, [data]);
+
+  const handleToggleFavorite = async (
+    pokemonName: string,
+    currentlyFavorite: boolean
+  ) => {
+    try {
+      if (!currentlyFavorite) {
+        setLocalFavorites((prev) => [...prev, pokemonName]);
+        await addFavorite({ name: pokemonName }).unwrap();
+      } else {
+        setLocalFavorites((prev) =>
+          prev.filter((name) => name !== pokemonName)
+        );
+        await removeFavorite({ name: pokemonName }).unwrap();
+      }
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+      setLocalFavorites((prev) => prev.filter((name) => name !== pokemonName));
+    }
+  };
 
   const lastPokemonElementRef = useInfiniteScroll({
     isFetching,
@@ -28,31 +68,27 @@ export const PokemonsList = () => {
     onLoadMore: () => setPageNumber((prev) => prev + 1),
   });
 
-  useEffect(() => {
-    if (!data?.results) return;
-    setAllPokemons((prev) => [...prev, ...data.results]);
-  }, [data]);
+  if (isLoading && pageNumber === 0) return <Loader />;
 
-  if (isLoading) return <Loader />;
   return (
     <ListContainer>
       {allPokemons?.map((pokemon, index) => {
-        if (index === allPokemons.length - 1) {
-          return (
-            <div ref={lastPokemonElementRef} key={pokemon.url}>
-              <Card
-                name={pokemon.name}
-                onClick={() => setSelectedPokemon(pokemon.name)}
-              />
-            </div>
-          );
-        }
+        const isLast = index === allPokemons.length - 1;
+        const isFavorite = localFavorites.includes(pokemon.name);
         return (
-          <Card
+          <div
             key={pokemon.url}
-            name={pokemon.name}
-            onClick={() => setSelectedPokemon(pokemon.name)}
-          />
+            ref={isLast ? lastPokemonElementRef : undefined}
+          >
+            <Card
+              name={pokemon.name}
+              isFavorite={isFavorite}
+              onClick={() => setSelectedPokemon(pokemon.name)}
+              onToggleFavorite={() =>
+                handleToggleFavorite(pokemon.name, isFavorite)
+              }
+            />
+          </div>
         );
       })}
       {isFetching && <Loader />}

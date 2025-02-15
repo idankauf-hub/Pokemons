@@ -60,9 +60,19 @@ export const saveFavoritePokemon = async (pokemon: {
   return await newFavorite.save();
 };
 
+export const deleteFavoritePokemonByName = async (
+  name: string
+): Promise<void> => {
+  const result = await FavoritePokemon.deleteOne({ name });
+  if (result.deletedCount === 0) {
+    throw new Error("Favorite Pokemon not found");
+  }
+};
+
 export default {
   getPaginated,
   getPokemonDetails,
   saveFavoritePokemon,
   findFavoritePokemonByName,
+  deleteFavoritePokemonByName,
 };

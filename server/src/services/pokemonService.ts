@@ -1,8 +1,22 @@
-import { IFavoritePokemon } from "../models/Pokemon";
+import Pokemon, { IFavoritePokemon } from "../models/Pokemon";
 import pokemonRepository from "../repositories/pokemonRepository";
 
 export const getPaginatedPokemons = async (limit: number, offset: number) => {
-  return await pokemonRepository.getPaginated(limit, offset);
+  const [data, favorites] = await Promise.all([
+    pokemonRepository.getPaginated(limit, offset),
+    Pokemon.find({}, "name").lean(),
+  ]);
+
+  const favoriteNames = new Set(
+    favorites?.map((favorite) => favorite?.name.toLowerCase())
+  );
+
+  const resultsWithIsFavorite = data?.results?.map((pokemon: any) => ({
+    ...pokemon,
+    isFavorite: favoriteNames.has(pokemon.name.toLowerCase()),
+  }));
+
+  return { ...data, results: resultsWithIsFavorite };
 };
 
 export const getPokemonDetails = async (name: string) => {
@@ -19,8 +33,13 @@ export const addFavoritePokemon = async (
   return await pokemonRepository.saveFavoritePokemon({ name });
 };
 
+export const deleteFavoritePokemon = async (name: string): Promise<void> => {
+  await pokemonRepository.deleteFavoritePokemonByName(name);
+};
+
 export default {
   getPaginatedPokemons,
   getPokemonDetails,
   addFavoritePokemon,
+  deleteFavoritePokemon,
 };
