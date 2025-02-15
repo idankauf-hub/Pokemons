@@ -1,5 +1,13 @@
-import { Container } from "./styles";
+import { CardContainer, PokemonName } from "./styles";
 
-export const Card = () => {
-  return <Container>dfdf</Container>;
+type CardProps = {
+  name: string;
+};
+
+export const Card = ({ name }: CardProps) => {
+  return (
+    <CardContainer>
+      <PokemonName>{name}</PokemonName>
+    </CardContainer>
+  );
 };

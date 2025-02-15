@@ -1,12 +1,24 @@
 import { styled } from "styled-components";
 import theme from "../../styles/thyme";
 
-export const Container = styled.div`
-  height: 30px;
-  padding: ${theme.spacing.sm};
-  width: fit-content;
-  border-radius: ${theme.spacing.sm};
-  background-color: #ffffff;
-  justify-content: center;
+export const CardContainer = styled.div`
+  display: flex;
   align-items: center;
+  gap: ${theme.spacing.md};
+  width: 250px;
+  min-height: 40px;
+  padding: ${theme.spacing.md};
+  border-radius: ${theme.spacing.sm};
+  background-color: ${theme.colors.white};
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+export const PokemonName = styled.span`
+  font-size: 18px;
+  font-weight: bold;
 `;
