@@ -4,7 +4,6 @@ import theme from "../../styles/thyme";
 export const ListContainer = styled.div`
   height: 70vh;
   width: 40vw;
-  margin: auto;
   padding: ${theme.spacing.md};
   border-radius: ${theme.spacing.md};
   background-color: ${theme.colors.glassWhite};

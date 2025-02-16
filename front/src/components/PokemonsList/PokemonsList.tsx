@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { MAX_POKEMONS } from "../../constants";
+import { useEffect, useMemo, useState } from "react";
+import { LIMIT, MAX_POKEMONS } from "../../constants";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import {
   useAddFavoriteMutation,
@@ -8,30 +8,55 @@ import {
 } from "../../services/pokemonApi";
 import { Pokemon } from "../../types/Pokemon";
 import { Card } from "../Card/Card";
-import { ListContainer } from "./styles";
-import PokemonDetailsModal from "../PokemonModal/PokemonModal";
+import { EmptyState } from "../EmptyState/EmptyState";
 import { Loader } from "../Loader/Loader";
+import PokemonDetailsModal from "../PokemonModal/PokemonModal";
+import { ListContainer } from "./styles";
 
-export const PokemonsList = () => {
+type PokemonsListProps = {
+  searchValue: string;
+  showFavorites: boolean;
+};
+export const PokemonsList = ({
+  searchValue,
+  showFavorites,
+}: PokemonsListProps) => {
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [localFavorites, setLocalFavorites] = useState<string[]>([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
 
-  const limit = 10;
-  const offset = pageNumber * limit;
+  const offset = pageNumber * LIMIT;
   const hasMorePokemons = allPokemons.length < MAX_POKEMONS;
 
   const { data, isFetching, isLoading } = useGetPokemonsQuery(
-    { limit, offset },
+    { limit: LIMIT, offset },
     { skip: !hasMorePokemons }
   );
   const [addFavorite] = useAddFavoriteMutation();
   const [removeFavorite] = useRemoveFavoriteMutation();
 
+  const filteredPokemons = useMemo(() => {
+    return allPokemons?.filter((pokemon) => {
+      const matchesSearch = pokemon.name
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
+
+      const matchesFavorites = showFavorites
+        ? localFavorites?.includes(pokemon.name)
+        : true;
+      return matchesSearch && matchesFavorites;
+    });
+  }, [allPokemons, searchValue, showFavorites, localFavorites]);
+
   useEffect(() => {
     if (!data?.results) return;
-    setAllPokemons((prev) => [...prev, ...data.results]);
+    setAllPokemons((prev) => {
+      const combined = [...prev, ...data.results];
+      const uniqueMap = new Map<string, Pokemon>();
+      combined.forEach((pokemon) => uniqueMap.set(pokemon.url, pokemon));
+      return Array.from(uniqueMap.values());
+    });
 
     const fetchedFavorites = data?.results
       ?.filter((pokemon) => pokemon?.isFavorite)
@@ -72,7 +97,7 @@ export const PokemonsList = () => {
 
   return (
     <ListContainer>
-      {allPokemons?.map((pokemon, index) => {
+      {filteredPokemons?.map((pokemon, index) => {
         const isLast = index === allPokemons.length - 1;
         const isFavorite = localFavorites.includes(pokemon.name);
         return (
@@ -92,6 +117,7 @@ export const PokemonsList = () => {
         );
       })}
       {isFetching && <Loader />}
+      {!filteredPokemons?.length && <EmptyState />}
       <PokemonDetailsModal
         isOpen={!!selectedPokemon}
         name={selectedPokemon ?? ""}

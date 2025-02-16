@@ -12,7 +12,7 @@ export const CardContainer = styled.div`
   background-color: ${theme.colors.white};
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.1s ease-in-out;
-
+  cursor: pointer;
   &:hover {
     transform: scale(1.05);
   }

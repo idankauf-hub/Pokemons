@@ -23,3 +23,12 @@ export const Container = styled.div`
     z-index: -1;
   }
 `;
+
+export const SearchAndListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  gap: ${theme.spacing.sm};
+`;
