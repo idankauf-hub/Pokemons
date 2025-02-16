@@ -116,8 +116,8 @@ export const PokemonsList = ({
           </div>
         );
       })}
-      {isFetching && <Loader />}
-      {!filteredPokemons?.length && <EmptyState />}
+      {isFetching && filteredPokemons?.length > 0 && <Loader />}
+      {!isFetching && !filteredPokemons?.length && <EmptyState />}
       <PokemonDetailsModal
         isOpen={!!selectedPokemon}
         name={selectedPokemon ?? ""}
