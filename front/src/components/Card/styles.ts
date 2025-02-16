@@ -7,6 +7,7 @@ export const CardContainer = styled.div`
   gap: ${theme.spacing.md};
   width: 250px;
   min-height: 40px;
+  justify-content: space-between;
   padding: ${theme.spacing.md};
   border-radius: ${theme.spacing.sm};
   background-color: ${theme.colors.white};
