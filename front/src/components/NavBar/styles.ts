@@ -24,10 +24,9 @@ export const NavItem = styled.li`
 `;
 
 export const StyledLink = styled(Link)`
-  color: white;
+  color: ${theme.colors.white};
   text-decoration: none;
   font-weight: bold;
-
   &:hover {
     text-decoration: underline;
   }

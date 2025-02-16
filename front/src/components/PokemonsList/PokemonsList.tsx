@@ -10,7 +10,7 @@ import { Pokemon } from "../../types/Pokemon";
 import { Card } from "../Card/Card";
 import { EmptyState } from "../EmptyState/EmptyState";
 import { Loader } from "../Loader/Loader";
-import PokemonDetailsModal from "../PokemonModal/PokemonModal";
+import { PokemonDetailsModal } from "../PokemonModal/PokemonModal";
 import { ListContainer } from "./styles";
 
 type PokemonsListProps = {

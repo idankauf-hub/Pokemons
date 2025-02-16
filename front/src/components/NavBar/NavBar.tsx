@@ -4,7 +4,7 @@ import logo from "../../assets/logo.png";
 export const NavBar = () => {
   return (
     <NavContainer>
-      <Logo src={logo} alt="Pokémon Logo" />
+      <Logo src={logo} alt="logo" />
       <NavList>
         <NavItem>
           <StyledLink to="/">All Pokemons</StyledLink>

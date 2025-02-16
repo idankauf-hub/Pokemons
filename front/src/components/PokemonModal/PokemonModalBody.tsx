@@ -51,7 +51,7 @@ export const PokemonModalBody = ({
               <strong>Types:</strong> {joinArray(data?.typesNames)}
             </BodyText>
             <BodyText>
-              <strong>Evolution:</strong> {joinArray(data?.evolutions, " -> ")}
+              <strong>Evolutions:</strong> {joinArray(data?.evolutions, " -> ")}
             </BodyText>
           </>
         )

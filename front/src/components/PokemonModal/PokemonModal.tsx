@@ -10,7 +10,7 @@ interface PokemonDetailsModalProps {
   isOpen: boolean;
 }
 
-const PokemonDetailsModal = ({
+export const PokemonDetailsModal = ({
   name,
   onClose,
   isOpen,
@@ -29,5 +29,3 @@ const PokemonDetailsModal = ({
     </Modal>
   );
 };
-
-export default PokemonDetailsModal;
