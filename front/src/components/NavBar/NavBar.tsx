@@ -9,9 +9,6 @@ export const NavBar = () => {
         <NavItem>
           <StyledLink to="/">All Pokemons</StyledLink>
         </NavItem>
-        <NavItem>
-          <StyledLink to="/favorites">My Pokemons</StyledLink>
-        </NavItem>
       </NavList>
     </NavContainer>
   );
