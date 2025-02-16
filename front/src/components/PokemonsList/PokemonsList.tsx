@@ -93,7 +93,7 @@ export const PokemonsList = ({
     onLoadMore: () => setPageNumber((prev) => prev + 1),
   });
 
-  if (isLoading && pageNumber === 0) return <Loader />;
+  // if (isLoading && pageNumber === 0) return <Loader />;
 
   return (
     <ListContainer>
@@ -116,6 +116,7 @@ export const PokemonsList = ({
           </div>
         );
       })}
+      {isLoading && pageNumber === 0 && <Loader />}
       {isFetching && filteredPokemons?.length > 0 && <Loader />}
       {!isFetching && !filteredPokemons?.length && <EmptyState />}
       <PokemonDetailsModal
